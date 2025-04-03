@@ -12,7 +12,8 @@ router.get("/", async (req, res) => {
         name: true,
       },
     });
-    res.json(users);
+    console.log(users[0]);
+    res.json({ message: "Here is the first user:", users: users[0].email });
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ error: "Failed to fetch users" });
@@ -32,13 +33,21 @@ router.post("/", async (req, res) => {
     });
 
     res.status(201).json({
-      id: newUser.id,
-      name: newUser.name,
-      email: newUser.email,
+      success: true,
+      message: "User created successfully",
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      },
     });
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ error: "Failed to create user" });
+    res.status(500).json({
+      success: false,
+      message: "Failed to create user",
+      error: error.message,
+    });
   }
 });
 
